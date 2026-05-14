@@ -32,6 +32,11 @@ return [
         'repository' => 'Webkul\User\Repositories\UserRepository',
     ],
 
+    'task_groups' => [
+        'name' => 'TaskGroups',
+        'repository' => 'Webkul\TaskManager\Repositories\TaskGroupRepository',
+    ],
+
     'organizations' => [
         'name' => 'Organizations',
         'repository' => 'Webkul\Contact\Repositories\OrganizationRepository',
@@ -51,4 +56,5 @@ return [
         'name' => 'Locations',
         'repository' => 'Webkul\Warehouse\Repositories\LocationRepository',
     ],
+
 ];

@@ -1,0 +1,28 @@
+{
+    "name": "krayin/krayin-task-manager",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tarun Verma",
+            "email": "tarun.laravel311@webkul.com"
+        }
+    ],
+    "require": {
+        "krayin/laravel-attribute": "^1.0",
+        "krayin/laravel-core": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webkul\\TaskManager\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\TaskManager\\Providers\\TaskManagerServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

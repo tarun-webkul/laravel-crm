@@ -616,6 +616,40 @@ return [
             ],
         ],
     ],
+    'task_manager' => [
+        'task_groups' => [
+            'index' => [
+                'title' => 'Task Groups',
+                'create-btn' => 'Create Task Group',
+                'create-success' => 'Task Group created successfully.',
+                'update-success' => 'Task Group updated successfully.',
+                'delete-success' => 'Task Group deleted successfully.',
+                'delete-failed' => 'Task Group can not be deleted.',
+                'datagrid' => [
+                    'assigned-to' => 'Assigned To',
+                    'delete' => 'Delete',
+                    'edit' => 'Edit',
+                    'id' => 'ID',
+                    'name' => 'Name',
+                    'members-count' => 'Members Count',
+                    'created-by' => 'Owner',
+                    'created-at' => 'Created At',
+                    'priority' => 'Priority',
+                    'status' => 'Status',
+                    'subject' => 'Subject',
+                    'view' => 'View',
+                ],
+            ],
+            'create' => [
+                'title' => 'Create Task Group',
+                'save-btn' => 'Save Task Group',
+            ],
+            'edit' => [
+                'title' => 'Edit Task Group',
+                'save-btn' => 'Save Task Group',
+            ],
+        ],
+    ],
     'products' => [
         'index' => [
             'title' => 'Products',
@@ -2121,6 +2155,9 @@ return [
         'person' => 'Person',
         'organizations' => 'Organizations',
         'organization' => 'Organization',
+        'task_manager' => 'Task Manager',
+        'tasks' => 'Tasks',
+        'task_groups' => 'Task Groups',
         'products' => 'Products',
         'product' => 'Product',
         'settings' => 'Settings',

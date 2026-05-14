@@ -30,4 +30,9 @@ return [
         'name' => 'admin::app.settings.warehouses.index.title',
         'repository' => 'Webkul\Warehouse\Repositories\WarehouseRepository',
     ],
+
+    'task_groups' => [
+        'name' => 'admin::app.task_manager.task_groups.index.title',
+        'repository' => 'Webkul\TaskManager\Repositories\TaskGroupRepository',
+    ],
 ];

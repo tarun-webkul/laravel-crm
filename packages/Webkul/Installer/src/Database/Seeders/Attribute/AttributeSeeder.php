@@ -640,6 +640,53 @@ class AttributeSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
+
+            /**
+             * Task Groups Attributes
+             **/
+            [
+                'code' => 'name',
+                'name' => trans('installer::app.seeders.attributes.task-groups.name', [], $defaultLocale),
+                'type' => 'text',
+                'entity_type' => 'task_groups',
+                'lookup_type' => null,
+                'validation' => null,
+                'sort_order' => 1,
+                'is_required' => 1,
+                'is_unique' => 0,
+                'quick_add' => 1,
+                'is_user_defined' => 0,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ], [
+                'code' => 'description',
+                'name' => trans('installer::app.seeders.attributes.task-groups.description', [], $defaultLocale),
+                'type' => 'textarea',
+                'entity_type' => 'task_groups',
+                'lookup_type' => null,
+                'validation' => null,
+                'sort_order' => 2,
+                'is_required' => 1,
+                'is_unique' => 0,
+                'quick_add' => 1,
+                'is_user_defined' => 0,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ], [
+                'code' => 'created_by',
+                'name' => trans('installer::app.seeders.attributes.task-groups.created_by', [], $defaultLocale),
+                'type' => 'lookup',
+                'entity_type' => 'task_groups',
+                'lookup_type' => 'users',
+                'validation' => null,
+                'sort_order' => 3,
+                'is_required' => 1,
+                'is_unique' => 0,
+                'quick_add' => 1,
+                'is_user_defined' => 0,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
         ]);
     }
 }

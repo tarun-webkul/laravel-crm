@@ -31,6 +31,11 @@ require 'products-routes.php';
 require 'contacts-routes.php';
 
 /**
+ * Task Manager routes.
+ */
+require 'task-manager-routes.php';
+
+/**
  * Activities routes.
  */
 require 'activities-routes.php';

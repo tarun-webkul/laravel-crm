@@ -128,6 +128,30 @@ Breadcrumbs::for('contacts.organizations.edit', function (BreadcrumbTrail $trail
     $trail->push(trans('admin::app.contacts.organizations.edit.title'), route('admin.contacts.organizations.edit', $organization->id));
 });
 
+// Dashboard > Task Manager
+Breadcrumbs::for('task_manager', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(trans('admin::app.layouts.task_manager'), route('admin.task_manager.task_groups.index'));
+});
+
+// Dashboard > Task Manager > TaskGroups
+Breadcrumbs::for('task_manager.task_groups', function (BreadcrumbTrail $trail) {
+    $trail->parent('task_manager');
+    $trail->push(trans('admin::app.layouts.task_groups'), route('admin.task_manager.task_groups.index'));
+});
+
+// Dashboard > Task Manager > TaskGroups > Create
+Breadcrumbs::for('task_manager.task_groups.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('task_manager.task_groups');
+    $trail->push(trans('admin::app.task_manager.task_groups.create.title'), route('admin.task_manager.task_groups.create'));
+});
+
+// Dashboard > Task Manager > TaskGroups > Edit
+Breadcrumbs::for('task_manager.task_groups.edit', function (BreadcrumbTrail $trail, $group) {
+    $trail->parent('task_manager.task_groups');
+    $trail->push(trans('admin::app.task_manager.task_groups.edit.title'), route('admin.task_manager.task_groups.edit', $group->id));
+});
+
 // Products
 Breadcrumbs::for('products', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');

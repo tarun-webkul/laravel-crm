@@ -116,13 +116,38 @@ return [
     ],
 
     /**
+     * Task Manager.
+     */
+    [
+        'key' => 'task_manager',
+        'name' => 'admin::app.layouts.task_manager',
+        'route' => 'admin.task_manager.task_groups.index',
+        'sort' => 7,
+        'icon-class' => 'icon-file',
+    ],
+    // [
+    //     'key' => 'task_manager.tasks',
+    //     'name' => 'admin::app.layouts.tasks',
+    //     'route' => 'admin.task_manager.tasks.index',
+    //     'sort' => 1,
+    //     'icon-class' => '',
+    // ],
+    [
+        'key' => 'task_manager.task_groups',
+        'name' => 'admin::app.layouts.task_groups',
+        'route' => 'admin.task_manager.task_groups.index',
+        'sort' => 2,
+        'icon-class' => '',
+    ],
+
+    /**
      * Products.
      */
     [
         'key' => 'products',
         'name' => 'admin::app.layouts.products',
         'route' => 'admin.products.index',
-        'sort' => 7,
+        'sort' => 8,
         'icon-class' => 'icon-product',
     ],
 
@@ -133,7 +158,7 @@ return [
         'key' => 'settings',
         'name' => 'admin::app.layouts.settings',
         'route' => 'admin.settings.index',
-        'sort' => 8,
+        'sort' => 9,
         'icon-class' => 'icon-setting',
     ], [
         'key' => 'settings.user',
@@ -284,7 +309,7 @@ return [
         'key' => 'configuration',
         'name' => 'admin::app.layouts.configuration',
         'route' => 'admin.configuration.index',
-        'sort' => 9,
+        'sort' => 10,
         'icon-class' => 'icon-configuration',
     ],
 ];

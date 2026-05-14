@@ -62,6 +62,12 @@ return [
                 'description' => 'Description',
                 'name' => 'Name',
             ],
+
+            'task-groups' => [
+                'name' => 'Name',
+                'description' => 'Description',
+                'created_by' => 'Owner',
+            ],
         ],
 
         'email' => [
