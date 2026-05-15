@@ -662,7 +662,7 @@ return [
                     'delete' => 'Delete',
                     'edit' => 'Edit',
                     'id' => 'ID',
-                    'name' => 'Name',
+                    'title' => 'Title',
                     'task_group' => 'Task Group',
                     'created-by' => 'Owner',
                     'created-at' => 'Created At',
@@ -679,6 +679,23 @@ return [
             'edit' => [
                 'title' => 'Edit Task',
                 'save-btn' => 'Save Task',
+            ],
+        ],
+        'task_comments' => [
+            'index' => [
+                'title' => 'Comments',
+                'create-btn' => 'Add Comment',
+                'create-success' => 'Comment added successfully.',
+                'delete-success' => 'Comment deleted successfully.',
+                'delete-failed' => 'Comment can not be deleted.',
+                'internal_notes_restricted' => 'Only the task creator or assignee can post internal notes.',
+                'comment_access_denied' => 'You do not have access to comment on this task.',
+                'datagrid' => [
+                    'comment' => 'Comment',
+                    'created-by' => 'Created By',
+                    'created-at' => 'Created At',
+                    'delete' => 'Delete',
+                ],
             ],
         ],
     ],

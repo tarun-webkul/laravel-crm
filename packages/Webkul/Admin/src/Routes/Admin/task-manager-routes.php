@@ -19,6 +19,14 @@ Route::prefix('task_manager')->group(function () {
 
             Route::post('create', 'store')->name('admin.task_manager.tasks.store');
 
+            Route::get('edit/{id?}', 'edit')->name('admin.task_manager.tasks.edit');
+
+            Route::put('edit/{id}', 'update')->name('admin.task_manager.tasks.update');
+
+            Route::delete('{id}', 'destroy')->name('admin.task_manager.tasks.delete');
+
+            Route::put('mass-destroy', 'massDestroy')->name('admin.task_manager.tasks.mass_delete');
+
         });
 
     /**

@@ -50,11 +50,11 @@ class TaskGroupController extends Controller
      */
     public function store(AttributeForm $request): RedirectResponse|JsonResponse
     {
-        Event::dispatch('contacts.task_group.create.before');
+        Event::dispatch('taskmanager.task_group.create.before');
 
-        $taskGroup = $this->taskGroupRepository->create(request()->all());
+        $taskGroup = $this->taskGroupRepository->create($request->all());
 
-        Event::dispatch('contacts.task_group.create.after', $taskGroup);
+        Event::dispatch('taskmanager.task_group.create.after', $taskGroup);
 
         if (request()->ajax()) {
             return response()->json([
@@ -83,11 +83,11 @@ class TaskGroupController extends Controller
      */
     public function update(AttributeForm $request, int $id): RedirectResponse
     {
-        Event::dispatch('contacts.task_group.update.before', $id);
+        Event::dispatch('taskmanager.task_group.update.before', $id);
 
-        $taskGroup = $this->taskGroupRepository->update(request()->all(), $id);
+        $taskGroup = $this->taskGroupRepository->update($request->all(), $id);
 
-        Event::dispatch('contacts.task_group.update.after', $taskGroup);
+        Event::dispatch('taskmanager.task_group.update.after', $taskGroup);
 
         session()->flash('success', trans('admin::app.task_manager.task_groups.index.update-success'));
 

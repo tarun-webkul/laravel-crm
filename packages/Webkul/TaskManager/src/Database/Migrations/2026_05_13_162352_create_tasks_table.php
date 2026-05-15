@@ -32,7 +32,6 @@ return new class extends Migration
             $table->foreign('group_id')->references('id')->on('task_groups')->onDelete('set null');
 
             $table->timestamps();
-            $table->softDeletes();
 
             // Indexes for common queries
             $table->index(['assigned_to', 'status']);

@@ -146,6 +146,12 @@ Breadcrumbs::for('task_manager.tasks.create', function (BreadcrumbTrail $trail) 
     $trail->push(trans('admin::app.task_manager.tasks.create.title'), route('admin.task_manager.tasks.create'));
 });
 
+// Dashboard > Task Manager > Tasks > Edit
+Breadcrumbs::for('task_manager.tasks.edit', function (BreadcrumbTrail $trail, $task) {
+    $trail->parent('task_manager.tasks');
+    $trail->push(trans('admin::app.task_manager.tasks.edit.title'), route('admin.task_manager.tasks.edit', $task->id));
+});
+
 // Dashboard > Task Manager > TaskGroups
 Breadcrumbs::for('task_manager.task_groups', function (BreadcrumbTrail $trail) {
     $trail->parent('task_manager');

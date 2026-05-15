@@ -64,7 +64,7 @@ class TaskCommentRepository extends Repository
             && $task->getCreatedBy() !== $user->id
             && $task->getAssignedTo() !== $user->id
         ) {
-            abort(403, 'Only the task creator or assignee can post internal notes.');
+            abort(403, trans('admin::app.task_manager.task_comments.index.internal_notes_restricted'));
         }
 
         $canComment = $task->getCreatedBy() === $user->id
@@ -72,7 +72,7 @@ class TaskCommentRepository extends Repository
             || $task->followers()->where('users.id', $user->id)->exists();
 
         if (! $canComment) {
-            abort(403, 'You do not have access to comment on this task.');
+            abort(403, trans('admin::app.task_manager.task_comments.index.comment_access_denied'));
         }
 
         $comment = parent::create([

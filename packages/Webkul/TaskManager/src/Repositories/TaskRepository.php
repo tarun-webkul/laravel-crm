@@ -10,7 +10,6 @@ use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Attribute\Repositories\AttributeValueRepository;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\TaskManager\Contracts\Task;
-use Webkul\TaskManager\Contracts\Task as TaskContract;
 use Webkul\TaskManager\Models\TaskFollowupProxy;
 
 class TaskRepository extends Repository
@@ -105,7 +104,7 @@ class TaskRepository extends Repository
 
             $task = parent::create($data);
 
-            // /**
+            //  /**
             //  * Save attribute values.
             //  */
             // $this->attributeValueRepository->save(array_merge($data, [
@@ -222,7 +221,7 @@ class TaskRepository extends Repository
      * Add follower.
      */
     public function addFollower(
-        TaskContract $task,
+        Task $task,
         int $userId,
         string $reason = 'manual'
     ): void {
@@ -260,7 +259,7 @@ class TaskRepository extends Repository
     /**
      * Remove follower.
      */
-    public function removeFollower(TaskContract $task, int $userId): void
+    public function removeFollower(Task $task, int $userId): void
     {
         $this->followupModel()::where('task_id', $task->getId())
             ->where('user_id', $userId)
@@ -277,7 +276,7 @@ class TaskRepository extends Repository
     /**
      * Check if user can view task.
      */
-    public function canView(TaskContract $task, int $userId): bool
+    public function canView(Task $task, int $userId): bool
     {
         if (
             $task->getCreatedBy() === $userId
@@ -301,7 +300,7 @@ class TaskRepository extends Repository
     /**
      * Check if user can edit task.
      */
-    public function canEdit(TaskContract $task, int $userId): bool
+    public function canEdit(Task $task, int $userId): bool
     {
         return $task->getCreatedBy() === $userId
             || Auth::user()->hasPermissionTo('task_manager.tasks.edit');

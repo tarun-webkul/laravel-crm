@@ -4,13 +4,11 @@ namespace Webkul\TaskManager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Webkul\TaskManager\Contracts\TaskComment as TaskCommentContract;
 use Webkul\User\Models\User;
 
 class TaskComment extends Model implements TaskCommentContract
 {
-    use SoftDeletes;
 
     protected $table = 'task_comments';
 

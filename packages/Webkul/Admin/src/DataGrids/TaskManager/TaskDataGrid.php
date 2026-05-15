@@ -47,7 +47,7 @@ class TaskDataGrid extends DataGrid
 
         $this->addColumn([
             'index' => 'title',
-            'label' => trans('admin::app.task_manager.tasks.index.datagrid.name'),
+            'label' => trans('admin::app.task_manager.tasks.index.datagrid.title'),
             'type' => 'string',
             'searchable' => true,
             'sortable' => true,
@@ -75,40 +75,40 @@ class TaskDataGrid extends DataGrid
         ]);
     }
 
-    // /**
-    //  * Prepare actions.
-    //  */
-    // public function prepareActions(): void
-    // {
-    //     if (bouncer()->hasPermission('task_manager.task_groups.edit')) {
-    //         $this->addAction([
-    //             'icon' => 'icon-edit',
-    //             'title' => trans('admin::app.task_manager.tasks.index.datagrid.edit'),
-    //             'method' => 'GET',
-    //             'url' => fn ($row) => route('admin.task_manager.tasks.edit', $row->id),
-    //         ]);
-    //     }
+    /**
+     * Prepare actions.
+     */
+    public function prepareActions(): void
+    {
+        if (bouncer()->hasPermission('task_manager.tasks.edit')) {
+            $this->addAction([
+                'icon' => 'icon-edit',
+                'title' => trans('admin::app.task_manager.tasks.index.datagrid.edit'),
+                'method' => 'GET',
+                'url' => fn ($row) => route('admin.task_manager.tasks.edit', $row->id),
+            ]);
+        }
 
-    //     if (bouncer()->hasPermission('task_manager.task_groups.delete')) {
-    //         $this->addAction([
-    //             'icon' => 'icon-delete',
-    //             'title' => trans('admin::app.task_manager.tasks.index.datagrid.delete'),
-    //             'method' => 'DELETE',
-    //             'url' => fn ($row) => route('admin.task_manager.tasks.delete', $row->id),
-    //         ]);
-    //     }
-    // }
+        if (bouncer()->hasPermission('task_manager.tasks.delete')) {
+            $this->addAction([
+                'icon' => 'icon-delete',
+                'title' => trans('admin::app.task_manager.tasks.index.datagrid.delete'),
+                'method' => 'DELETE',
+                'url' => fn ($row) => route('admin.task_manager.tasks.delete', $row->id),
+            ]);
+        }
+    }
 
-    // /**
-    //  * Prepare mass actions.
-    //  */
-    // public function prepareMassActions(): void
-    // {
-    //     $this->addMassAction([
-    //         'icon' => 'icon-delete',
-    //         'title' => trans('admin::app.task_manager.tasks.index.datagrid.delete'),
-    //         'method' => 'PUT',
-    //         'url' => route('admin.task_manager.tasks.mass_delete'),
-    //     ]);
-    // }
+    /**
+     * Prepare mass actions.
+     */
+    public function prepareMassActions(): void
+    {
+        $this->addMassAction([
+            'icon' => 'icon-delete',
+            'title' => trans('admin::app.task_manager.tasks.index.datagrid.delete'),
+            'method' => 'PUT',
+            'url' => route('admin.task_manager.tasks.mass_delete'),
+        ]);
+    }
 }
