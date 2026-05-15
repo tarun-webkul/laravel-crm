@@ -105,12 +105,12 @@ class TaskRepository extends Repository
 
             $task = parent::create($data);
 
-            /**
-             * Save attribute values.
-             */
-            $this->attributeValueRepository->save(array_merge($data, [
-                'entity_id' => $task->id,
-            ]));
+            // /**
+            //  * Save attribute values.
+            //  */
+            // $this->attributeValueRepository->save(array_merge($data, [
+            //     'entity_id' => $task->id,
+            // ]));
 
             /**
              * Auto-follow creator.

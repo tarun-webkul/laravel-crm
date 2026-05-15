@@ -31,6 +31,11 @@ return [
         'repository' => 'Webkul\Warehouse\Repositories\WarehouseRepository',
     ],
 
+    'tasks' => [
+        'name' => 'admin::app.task_manager.tasks.index.title',
+        'repository' => 'Webkul\TaskManager\Repositories\TaskRepository',
+    ],
+
     'task_groups' => [
         'name' => 'admin::app.task_manager.task_groups.index.title',
         'repository' => 'Webkul\TaskManager\Repositories\TaskGroupRepository',

@@ -649,6 +649,38 @@ return [
                 'save-btn' => 'Save Task Group',
             ],
         ],
+        'tasks' => [
+            'index' => [
+                'title' => 'Tasks',
+                'create-btn' => 'Create Task',
+                'create-success' => 'Task created successfully.',
+                'update-success' => 'Task updated successfully.',
+                'delete-success' => 'Task deleted successfully.',
+                'delete-failed' => 'Task can not be deleted.',
+                'datagrid' => [
+                    'assigned-to' => 'Assigned To',
+                    'delete' => 'Delete',
+                    'edit' => 'Edit',
+                    'id' => 'ID',
+                    'name' => 'Name',
+                    'task_group' => 'Task Group',
+                    'created-by' => 'Owner',
+                    'created-at' => 'Created At',
+                    'priority' => 'Priority',
+                    'status' => 'Status',
+                    'subject' => 'Subject',
+                    'view' => 'View',
+                ],
+            ],
+            'create' => [
+                'title' => 'Create Task',
+                'save-btn' => 'Save Task',
+            ],
+            'edit' => [
+                'title' => 'Edit Task',
+                'save-btn' => 'Save Task',
+            ],
+        ],
     ],
     'products' => [
         'index' => [

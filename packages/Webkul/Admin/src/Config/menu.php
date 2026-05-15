@@ -125,13 +125,13 @@ return [
         'sort' => 7,
         'icon-class' => 'icon-file',
     ],
-    // [
-    //     'key' => 'task_manager.tasks',
-    //     'name' => 'admin::app.layouts.tasks',
-    //     'route' => 'admin.task_manager.tasks.index',
-    //     'sort' => 1,
-    //     'icon-class' => '',
-    // ],
+    [
+        'key' => 'task_manager.tasks',
+        'name' => 'admin::app.layouts.tasks',
+        'route' => 'admin.task_manager.tasks.index',
+        'sort' => 1,
+        'icon-class' => '',
+    ],
     [
         'key' => 'task_manager.task_groups',
         'name' => 'admin::app.layouts.task_groups',

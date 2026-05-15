@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run($parameters = [])
     {
         $this->call(AttributeSeeder::class, false, ['parameters' => $parameters]);
+        $this->call(AttributeOptionSeeder::class, false, ['parameters' => $parameters]);
     }
 }

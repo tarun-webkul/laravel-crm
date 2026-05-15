@@ -37,6 +37,11 @@ return [
         'repository' => 'Webkul\TaskManager\Repositories\TaskGroupRepository',
     ],
 
+    'tasks' => [
+        'name' => 'Tasks',
+        'repository' => 'Webkul\TaskManager\Repositories\TaskRepository',
+    ],
+
     'organizations' => [
         'name' => 'Organizations',
         'repository' => 'Webkul\Contact\Repositories\OrganizationRepository',
@@ -55,6 +60,12 @@ return [
     'locations' => [
         'name' => 'Locations',
         'repository' => 'Webkul\Warehouse\Repositories\LocationRepository',
+    ],
+
+    'attribute_options' => [
+        'key' => 'attribute_options',
+        'name' => 'Attribute Options',
+        'model' => 'Webkul\Attribute\Models\AttributeOption',
     ],
 
 ];

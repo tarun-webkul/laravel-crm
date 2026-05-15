@@ -2,8 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use Webkul\Admin\Http\Controllers\TaskManager\TaskGroup\TaskGroupController;
+use Webkul\Admin\Http\Controllers\TaskManager\Tasks\TaskController;
 
 Route::prefix('task_manager')->group(function () {
+
+    /**
+     * Tasks routes.
+     */
+    Route::controller(TaskController::class)
+        ->prefix('tasks')
+        ->group(function () {
+
+            Route::get('', 'index')->name('admin.task_manager.tasks.index');
+
+            Route::get('create', 'create')->name('admin.task_manager.tasks.create');
+
+            Route::post('create', 'store')->name('admin.task_manager.tasks.store');
+
+        });
 
     /**
      * Task groups routes.

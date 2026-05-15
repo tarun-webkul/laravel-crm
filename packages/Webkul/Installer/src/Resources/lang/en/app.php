@@ -63,10 +63,47 @@ return [
                 'name' => 'Name',
             ],
 
+            'tasks' => [
+                'title' => 'Title',
+                'description' => 'Description',
+                'status' => 'Status',
+                'status-pending' => 'Pending',
+                'status-in-progress' => 'In Progress',
+                'status-on-hold' => 'On Hold',
+                'status-completed' => 'Completed',
+                'status-cancelled' => 'Cancelled',
+                'priority' => 'Priority',
+                'priority-low' => 'Low',
+                'priority-medium' => 'Medium',
+                'priority-high' => 'High',
+                'priority-critical' => 'Critical',
+                'deadline' => 'Deadline',
+                'created_by' => 'Created By',
+                'assigned_to' => 'Assigned To',
+                'group' => 'Task Group',
+            ],
+
             'task-groups' => [
                 'name' => 'Name',
                 'description' => 'Description',
                 'created_by' => 'Owner',
+            ],
+        ],
+
+        'attribute-options' => [
+            'task-statuses' => [
+                'pending' => 'Pending',
+                'in-progress' => 'In Progress',
+                'on-hold' => 'On Hold',
+                'completed' => 'Completed',
+                'cancelled' => 'Cancelled',
+            ],
+
+            'task-priorities' => [
+                'low' => 'Low',
+                'medium' => 'Medium',
+                'high' => 'High',
+                'critical' => 'Critical',
             ],
         ],
 
