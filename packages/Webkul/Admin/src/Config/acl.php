@@ -202,6 +202,51 @@ return [
         'route' => ['admin.contacts.organizations.delete', 'admin.contacts.organizations.mass_delete'],
         'sort' => 3,
     ], [
+        'key' => 'task_manager',
+        'name' => 'admin::app.acl.task_manager',
+        'route' => 'admin.task_manager.tasks.index',
+        'sort' => 6,
+    ], [
+        'key' => 'task_manager.tasks',
+        'name' => 'admin::app.acl.tasks',
+        'route' => 'admin.task_manager.tasks.index',
+        'sort' => 1,
+    ], [
+        'key' => 'task_manager.tasks.create',
+        'name' => 'admin::app.acl.create',
+        'route' => ['admin.task_manager.tasks.create', 'admin.task_manager.tasks.store'],
+        'sort' => 2,
+    ], [
+        'key' => 'task_manager.tasks.edit',
+        'name' => 'admin::app.acl.edit',
+        'route' => ['admin.task_manager.tasks.edit', 'admin.task_manager.tasks.update'],
+        'sort' => 3,
+    ], [
+        'key' => 'task_manager.tasks.delete',
+        'name' => 'admin::app.acl.delete',
+        'route' => ['admin.task_manager.tasks.delete', 'admin.task_manager.tasks.mass_delete'],
+        'sort' => 4,
+    ], [
+        'key' => 'task_manager.task_groups',
+        'name' => 'admin::app.acl.task_groups',
+        'route' => 'admin.task_manager.task_groups.index',
+        'sort' => 2,
+    ], [
+        'key' => 'task_manager.task_groups.create',
+        'name' => 'admin::app.acl.create',
+        'route' => ['admin.task_manager.task_groups.create', 'admin.task_manager.task_groups.store'],
+        'sort' => 1,
+    ], [
+        'key' => 'task_manager.task_groups.edit',
+        'name' => 'admin::app.acl.edit',
+        'route' => ['admin.task_manager.task_groups.edit', 'admin.task_manager.task_groups.update'],
+        'sort' => 2,
+    ], [
+        'key' => 'task_manager.task_groups.delete',
+        'name' => 'admin::app.acl.delete',
+        'route' => ['admin.task_manager.task_groups.delete', 'admin.task_manager.task_groups.mass_delete'],
+        'sort' => 3,
+    ], [
         'key' => 'products',
         'name' => 'admin::app.acl.products',
         'route' => 'admin.products.index',

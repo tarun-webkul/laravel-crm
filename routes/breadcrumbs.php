@@ -131,7 +131,7 @@ Breadcrumbs::for('contacts.organizations.edit', function (BreadcrumbTrail $trail
 // Dashboard > Task Manager
 Breadcrumbs::for('task_manager', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push(trans('admin::app.layouts.task_manager'), route('admin.task_manager.task_groups.index'));
+    $trail->push(trans('admin::app.layouts.task_manager'), route('admin.task_manager.tasks.index'));
 });
 
 // Dashboard > Task Manager > Tasks

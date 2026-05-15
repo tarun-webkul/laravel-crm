@@ -13,7 +13,6 @@ use Webkul\User\Models\User;
 
 class Task extends Model implements TaskContract
 {
-
     protected $table = 'tasks';
 
     protected $fillable = [

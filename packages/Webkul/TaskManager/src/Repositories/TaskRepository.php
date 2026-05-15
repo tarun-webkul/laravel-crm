@@ -137,7 +137,7 @@ class TaskRepository extends Repository
      */
     public function update(array $data, $id, $attributes = [])
     {
-        return DB::transaction(function () use ($data, $id, $attributes) {
+        return DB::transaction(function () use ($data, $id) {
 
             $task = $this->findOrFail($id);
 
@@ -145,37 +145,37 @@ class TaskRepository extends Repository
 
             $task = parent::update($data, $id);
 
-            /**
-             * If attributes are provided then only save provided attributes.
-             */
-            if (! empty($attributes)) {
+            // /**
+            //  * If attributes are provided then only save provided attributes.
+            //  */
+            // if (! empty($attributes)) {
 
-                $conditions = [
-                    'entity_type' => $data['entity_type'] ?? 'tasks',
-                ];
+            //     $conditions = [
+            //         'entity_type' => $data['entity_type'] ?? 'tasks',
+            //     ];
 
-                if (isset($data['quick_add'])) {
-                    $conditions['quick_add'] = 1;
-                }
+            //     if (isset($data['quick_add'])) {
+            //         $conditions['quick_add'] = 1;
+            //     }
 
-                $attributes = $this->attributeRepository
-                    ->where($conditions)
-                    ->whereIn('code', $attributes)
-                    ->get();
+            //     $attributes = $this->attributeRepository
+            //         ->where($conditions)
+            //         ->whereIn('code', $attributes)
+            //         ->get();
 
-                $this->attributeValueRepository->save(array_merge($data, [
-                    'entity_id' => $task->id,
-                ]), $attributes);
+            //     $this->attributeValueRepository->save(array_merge($data, [
+            //         'entity_id' => $task->id,
+            //     ]), $attributes);
 
-            } else {
+            // } else {
 
-                /**
-                 * Save all attributes.
-                 */
-                $this->attributeValueRepository->save(array_merge($data, [
-                    'entity_id' => $task->id,
-                ]));
-            }
+            //     /**
+            //      * Save all attributes.
+            //      */
+            //     $this->attributeValueRepository->save(array_merge($data, [
+            //         'entity_id' => $task->id,
+            //     ]));
+            // }
 
             /**
              * Assignee changed.

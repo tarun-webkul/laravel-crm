@@ -62,10 +62,4 @@ return [
         'repository' => 'Webkul\Warehouse\Repositories\LocationRepository',
     ],
 
-    'attribute_options' => [
-        'key' => 'attribute_options',
-        'name' => 'Attribute Options',
-        'model' => 'Webkul\Attribute\Models\AttributeOption',
-    ],
-
 ];

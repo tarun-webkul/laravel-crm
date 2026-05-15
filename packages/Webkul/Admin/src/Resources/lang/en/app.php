@@ -47,6 +47,9 @@ return [
         'campaigns' => 'Campaigns',
         'warehouses' => 'Warehouses',
         'inventory' => 'Inventory',
+        'task_manager' => 'Task Manager',
+        'tasks' => 'Tasks',
+        'task_groups' => 'Task Groups',
     ],
     'users' => [
         'activate-warning' => 'Your account is not activated yet. Please contact the administrator.',

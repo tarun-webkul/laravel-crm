@@ -3,11 +3,54 @@
 namespace Webkul\Admin\DataGrids\TaskManager;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
+use Webkul\TaskManager\Repositories\TaskGroupRepository;
 
 class TaskDataGrid extends DataGrid
 {
+    protected TaskGroupRepository $taskGroupRepository;
+
+    public function __construct(TaskGroupRepository $taskGroupRepository)
+    {
+        $this->taskGroupRepository = $taskGroupRepository;
+    }
+
+    /**
+     * Get attribute options (for dropdown filters)
+     */
+    protected function getAttributeOptions(string $code): array
+    {
+        return Cache::remember("attr_options_$code", 3600, function () use ($code) {
+            return DB::table('attributes as a')
+                ->join('attribute_options as ao', 'ao.attribute_id', '=', 'a.id')
+                ->where('a.code', $code)
+                ->select('ao.id', 'ao.name')
+                ->orderBy('ao.sort_order')
+                ->get()
+                ->map(fn ($row) => [
+                    'label' => $row->name,
+                    'value' => $row->id,
+                ])
+                ->toArray();
+        });
+    }
+
+    /**
+     * Get attribute map (id => name) for display
+     */
+    protected function getAttributeMap(string $code): array
+    {
+        return Cache::remember("attr_map_$code", 3600, function () use ($code) {
+            return DB::table('attributes as a')
+                ->join('attribute_options as ao', 'ao.attribute_id', '=', 'a.id')
+                ->where('a.code', $code)
+                ->pluck('ao.name', 'ao.id')
+                ->toArray();
+        });
+    }
+
     /**
      * Prepare query builder.
      */
@@ -21,22 +64,35 @@ class TaskDataGrid extends DataGrid
                 'tasks.created_at',
                 'tasks.group_id',
                 'task_groups.name as task_group_name',
+                'tasks.status',
+                'tasks.priority',
+                'task_groups.id as task_groups_id'
             )
             ->leftJoin('task_groups', 'task_groups.id', '=', 'tasks.group_id');
 
+        /**
+         * Filters
+         */
         $this->addFilter('id', 'tasks.id');
-        $this->addFilter('name', 'tasks.name');
+        $this->addFilter('title', 'tasks.title');
+        $this->addFilter('task_group_name', 'task_groups.id');
         $this->addFilter('created_at', 'tasks.created_at');
-        $this->addFilter('task_group_name', 'task_groups.name');
+
+        // attribute-based filters
+        $this->addFilter('status', 'tasks.status');
+        $this->addFilter('priority', 'tasks.priority');
 
         return $query;
     }
 
     /**
-     * Add columns.
+     * Columns
      */
     public function prepareColumns(): void
     {
+        /**
+         * ID
+         */
         $this->addColumn([
             'index' => 'id',
             'label' => trans('admin::app.task_manager.tasks.index.datagrid.id'),
@@ -45,38 +101,100 @@ class TaskDataGrid extends DataGrid
             'sortable' => true,
         ]);
 
+        /**
+         * TITLE
+         */
         $this->addColumn([
             'index' => 'title',
             'label' => trans('admin::app.task_manager.tasks.index.datagrid.title'),
             'type' => 'string',
+            'filterable' => true,
             'searchable' => true,
             'sortable' => true,
-            'filterable' => true,
         ]);
 
+        /**
+         * STATUS
+         */
+        $statusMap = $this->getAttributeMap('status');
+
+        $this->addColumn([
+            'index' => 'status',
+            'label' => trans('admin::app.task_manager.tasks.index.datagrid.status'),
+            'type' => 'string',
+            'filterable' => true,
+            'searchable' => true,
+            'sortable' => true,
+            'filterable_type' => 'dropdown',
+            'filterable_options' => $this->getAttributeOptions('status'),
+            'closure' => function ($row) use ($statusMap) {
+                return $statusMap[$row->status] ?? $row->status;
+            },
+        ]);
+
+        /**
+         * PRIORITY
+         */
+        $priorityMap = $this->getAttributeMap('priority');
+
+        $this->addColumn([
+            'index' => 'priority',
+            'label' => trans('admin::app.task_manager.tasks.index.datagrid.priority'),
+            'type' => 'string',
+            'filterable' => true,
+            'searchable' => true,
+            'sortable' => true,
+            'filterable_type' => 'dropdown',
+            'filterable_options' => $this->getAttributeOptions('priority'),
+            'closure' => function ($row) use ($priorityMap) {
+                return $priorityMap[$row->priority] ?? $row->priority;
+            },
+        ]);
+
+        /**
+         * TASK GROUP
+         */
         $this->addColumn([
             'index' => 'task_group_name',
             'label' => trans('admin::app.task_manager.tasks.index.datagrid.task_group'),
             'type' => 'string',
+            'filterable' => true,
             'searchable' => true,
             'sortable' => true,
-            'filterable' => true,
+            'filterable_type' => 'dropdown',
+            'filterable_options' => $this->taskGroupRepository->all()
+                ->map(fn ($group) => [
+                    'label' => $group->name,
+                    'value' => $group->id,
+                ])
+                ->toArray(),
+            'closure' => function ($row) {
+                if (! $row->task_groups_id) {
+                    return '--';
+                }
+
+                return $row->task_group_name;
+            },
         ]);
 
+        /**
+         * CREATED AT
+         */
         $this->addColumn([
             'index' => 'created_at',
             'label' => trans('admin::app.task_manager.tasks.index.datagrid.created-at'),
             'type' => 'date',
-            'searchable' => true,
             'filterable' => true,
             'filterable_type' => 'date_range',
+            'searchable' => true,
             'sortable' => true,
+
             'closure' => fn ($row) => core()->formatDate($row->created_at),
         ]);
     }
 
     /**
-     * Prepare actions.
+     * Actions
      */
     public function prepareActions(): void
     {
@@ -100,7 +218,7 @@ class TaskDataGrid extends DataGrid
     }
 
     /**
-     * Prepare mass actions.
+     * Mass Actions
      */
     public function prepareMassActions(): void
     {

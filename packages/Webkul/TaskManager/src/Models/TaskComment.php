@@ -9,7 +9,6 @@ use Webkul\User\Models\User;
 
 class TaskComment extends Model implements TaskCommentContract
 {
-
     protected $table = 'task_comments';
 
     protected $fillable = ['task_id', 'user_id', 'type', 'comment', 'is_edited'];
