@@ -38,6 +38,16 @@ class TaskController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function view(int $id): View
+    {
+        $task = $this->taskRepository->findOrFail($id);
+
+        return view('admin::task_manager.tasks.view', compact('task'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create(): View
@@ -50,11 +60,11 @@ class TaskController extends Controller
      */
     public function store(AttributeForm $request): RedirectResponse|JsonResponse
     {
-        Event::dispatch('taskmanager.tasks.create.before');
+        Event::dispatch('task_manager.tasks.create.before');
 
         $task = $this->taskRepository->create($request->all());
 
-        Event::dispatch('taskmanager.tasks.create.after', $task);
+        Event::dispatch('task_manager.tasks.create.after', $task);
 
         if (request()->ajax()) {
             return response()->json([
@@ -83,11 +93,11 @@ class TaskController extends Controller
      */
     public function update(AttributeForm $request, int $id): RedirectResponse
     {
-        Event::dispatch('contacts.task.update.before', $id);
+        Event::dispatch('task_manager.tasks.update.before', $id);
 
         $task = $this->taskRepository->update($request->all(), $id);
 
-        Event::dispatch('contacts.task.update.after', $task);
+        Event::dispatch('task_manager.tasks.update.after', $task);
 
         session()->flash('success', trans('admin::app.task_manager.tasks.index.update-success'));
 
@@ -100,11 +110,11 @@ class TaskController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            Event::dispatch('contact.task.delete.before', $id);
+            Event::dispatch('task_manager.tasks.delete.before', $id);
 
             $this->taskRepository->delete($id);
 
-            Event::dispatch('contact.task.delete.after', $id);
+            Event::dispatch('task_manager.tasks.delete.after', $id);
 
             return response()->json([
                 'message' => trans('admin::app.task_manager.tasks.index.delete-success'),
@@ -124,11 +134,11 @@ class TaskController extends Controller
         $tasks = $this->taskRepository->findWhereIn('id', $massDestroyRequest->input('indices'));
 
         foreach ($tasks as $task) {
-            Event::dispatch('contact.task.delete.before', $task);
+            Event::dispatch('task_manager.tasks.delete.before', $task);
 
             $this->taskRepository->delete($task->id);
 
-            Event::dispatch('contact.task.delete.after', $task);
+            Event::dispatch('task_manager.tasks.delete.after', $task);
         }
 
         return response()->json([

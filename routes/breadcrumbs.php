@@ -152,6 +152,12 @@ Breadcrumbs::for('task_manager.tasks.edit', function (BreadcrumbTrail $trail, $t
     $trail->push(trans('admin::app.task_manager.tasks.edit.title'), route('admin.task_manager.tasks.edit', $task->id));
 });
 
+// Dashboard > Task Manager > Tasks > View
+Breadcrumbs::for('task_manager.tasks.view', function (BreadcrumbTrail $trail, $task) {
+    $trail->parent('task_manager.tasks');
+    $trail->push('#'.$task->id, route('admin.task_manager.tasks.view', $task->id));
+});
+
 // Dashboard > Task Manager > TaskGroups
 Breadcrumbs::for('task_manager.task_groups', function (BreadcrumbTrail $trail) {
     $trail->parent('task_manager');
@@ -168,6 +174,18 @@ Breadcrumbs::for('task_manager.task_groups.create', function (BreadcrumbTrail $t
 Breadcrumbs::for('task_manager.task_groups.edit', function (BreadcrumbTrail $trail, $group) {
     $trail->parent('task_manager.task_groups');
     $trail->push(trans('admin::app.task_manager.task_groups.edit.title'), route('admin.task_manager.task_groups.edit', $group->id));
+});
+
+// Dashboard > Task Manager > TaskGroups > Manage
+Breadcrumbs::for('task_manager.task_groups.manage-members', function (BreadcrumbTrail $trail, $group) {
+    $trail->parent('task_manager.task_groups');
+
+    $trail->push(
+        trans('admin::app.task_manager.task_groups.manage-members.title', [
+            'name' => $group->name,
+        ]),
+        route('admin.task_manager.task_groups.manage-members.index', $group->id)
+    );
 });
 
 // Products

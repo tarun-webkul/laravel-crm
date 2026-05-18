@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Webkul\Admin\Http\Controllers\TaskManager\TaskGroup\TaskGroupController;
+use Webkul\Admin\Http\Controllers\TaskManager\TaskGroup\TaskGroupUserController;
 use Webkul\Admin\Http\Controllers\TaskManager\Tasks\TaskController;
 
-Route::prefix('task_manager')->group(function () {
+Route::prefix('task-manager')->group(function () {
 
     /**
      * Tasks routes.
@@ -14,6 +15,8 @@ Route::prefix('task_manager')->group(function () {
         ->group(function () {
 
             Route::get('', 'index')->name('admin.task_manager.tasks.index');
+
+            Route::get('view/{id}', 'view')->name('admin.task_manager.tasks.view');
 
             Route::get('create', 'create')->name('admin.task_manager.tasks.create');
 
@@ -33,7 +36,7 @@ Route::prefix('task_manager')->group(function () {
      * Task groups routes.
      */
     Route::controller(TaskGroupController::class)
-        ->prefix('task_groups')
+        ->prefix('task-groups')
         ->group(function () {
 
             Route::get('', 'index')->name('admin.task_manager.task_groups.index');
@@ -49,6 +52,24 @@ Route::prefix('task_manager')->group(function () {
             Route::delete('{id}', 'destroy')->name('admin.task_manager.task_groups.delete');
 
             Route::put('mass-destroy', 'massDestroy')->name('admin.task_manager.task_groups.mass_delete');
+
+            Route::controller(TaskGroupUserController::class)
+                ->prefix('{taskGroupId}/manage-members')
+                ->group(function () {
+
+                    Route::get('/', 'index')
+                        ->name('admin.task_manager.task_groups.manage-members.index');
+
+                    Route::post('assign', 'assign')
+                        ->name('admin.task_manager.task_groups.manage-members.assign');
+
+                    Route::delete('{userId}', 'unassign')
+                        ->name('admin.task_manager.task_groups.manage-members.unassign');
+
+                    Route::put('mass-destroy', 'massDestroy')
+                        ->name('admin.task_manager.task_groups.manage-members.mass_delete');
+                });
+
         });
 
 });

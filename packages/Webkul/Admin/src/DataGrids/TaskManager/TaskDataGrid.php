@@ -66,7 +66,8 @@ class TaskDataGrid extends DataGrid
                 'task_groups.name as task_group_name',
                 'tasks.status',
                 'tasks.priority',
-                'task_groups.id as task_groups_id'
+                'task_groups.id as task_groups_id',
+                'tasks.assigned_to',
             )
             ->leftJoin('task_groups', 'task_groups.id', '=', 'tasks.group_id');
 
@@ -81,6 +82,7 @@ class TaskDataGrid extends DataGrid
         // attribute-based filters
         $this->addFilter('status', 'tasks.status');
         $this->addFilter('priority', 'tasks.priority');
+        $this->addFilter('assigned_to', 'tasks.assigned_to');
 
         return $query;
     }
@@ -111,6 +113,59 @@ class TaskDataGrid extends DataGrid
             'filterable' => true,
             'searchable' => true,
             'sortable' => true,
+        ]);
+
+        /**
+         * TASK GROUP
+         */
+        $this->addColumn([
+            'index' => 'task_group_name',
+            'label' => trans('admin::app.task_manager.tasks.index.datagrid.task_group'),
+            'type' => 'string',
+            'filterable' => true,
+            'searchable' => true,
+            'sortable' => true,
+            'filterable_type' => 'dropdown',
+            'filterable_options' => $this->taskGroupRepository->all()
+                ->map(fn ($group) => [
+                    'label' => $group->name,
+                    'value' => $group->id,
+                ])
+                ->toArray(),
+            'closure' => function ($row) {
+                if (! $row->task_groups_id) {
+                    return '--';
+                }
+
+                return $row->task_group_name;
+            },
+        ]);
+
+        /**
+         * ASSIGNED TO
+         */
+        $this->addColumn([
+            'index' => 'assigned_to',
+            'label' => trans('admin::app.task_manager.tasks.index.datagrid.assigned-to'),
+            'type' => 'string',
+            'filterable' => true,
+            'searchable' => true,
+            'sortable' => true,
+            'filterable_type' => 'dropdown',
+            'filterable_options' => app(config('auth.providers.users.model'))->all()
+                ->map(fn ($user) => [
+                    'label' => $user->name." ({$user->email})",
+                    'value' => $user->id,
+                ])
+                ->toArray(),
+            'closure' => function ($row) {
+                if (! $row->assigned_to) {
+                    return '--';
+                }
+                $user = app(config('auth.providers.users.model'))->find($row->assigned_to);
+
+                return $user ? $user->name." ({$user->email})" : '--';
+            },
         ]);
 
         /**
@@ -152,32 +207,6 @@ class TaskDataGrid extends DataGrid
         ]);
 
         /**
-         * TASK GROUP
-         */
-        $this->addColumn([
-            'index' => 'task_group_name',
-            'label' => trans('admin::app.task_manager.tasks.index.datagrid.task_group'),
-            'type' => 'string',
-            'filterable' => true,
-            'searchable' => true,
-            'sortable' => true,
-            'filterable_type' => 'dropdown',
-            'filterable_options' => $this->taskGroupRepository->all()
-                ->map(fn ($group) => [
-                    'label' => $group->name,
-                    'value' => $group->id,
-                ])
-                ->toArray(),
-            'closure' => function ($row) {
-                if (! $row->task_groups_id) {
-                    return '--';
-                }
-
-                return $row->task_group_name;
-            },
-        ]);
-
-        /**
          * CREATED AT
          */
         $this->addColumn([
@@ -198,6 +227,16 @@ class TaskDataGrid extends DataGrid
      */
     public function prepareActions(): void
     {
+
+        if (bouncer()->hasPermission('task_manager.tasks.view')) {
+            $this->addAction([
+                'icon' => 'icon-eye',
+                'title' => trans('admin::app.task_manager.tasks.index.datagrid.view'),
+                'method' => 'GET',
+                'url' => fn ($row) => route('admin.task_manager.tasks.view', $row->id),
+            ]);
+        }
+
         if (bouncer()->hasPermission('task_manager.tasks.edit')) {
             $this->addAction([
                 'icon' => 'icon-edit',

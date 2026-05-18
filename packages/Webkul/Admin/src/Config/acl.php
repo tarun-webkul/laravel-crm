@@ -209,7 +209,7 @@ return [
     ], [
         'key' => 'task_manager.tasks',
         'name' => 'admin::app.acl.tasks',
-        'route' => 'admin.task_manager.tasks.index',
+        'route' => ['admin.task_manager.tasks.index'],
         'sort' => 1,
     ], [
         'key' => 'task_manager.tasks.create',
@@ -226,6 +226,11 @@ return [
         'name' => 'admin::app.acl.delete',
         'route' => ['admin.task_manager.tasks.delete', 'admin.task_manager.tasks.mass_delete'],
         'sort' => 4,
+    ], [
+        'key' => 'task_manager.tasks.view',
+        'name' => 'admin::app.acl.view',
+        'route' => 'admin.task_manager.tasks.view',
+        'sort' => 5,
     ], [
         'key' => 'task_manager.task_groups',
         'name' => 'admin::app.acl.task_groups',
@@ -246,7 +251,27 @@ return [
         'name' => 'admin::app.acl.delete',
         'route' => ['admin.task_manager.task_groups.delete', 'admin.task_manager.task_groups.mass_delete'],
         'sort' => 3,
-    ], [
+    ],
+    [
+        'key' => 'task_manager.task_groups.manage-members',
+        'name' => 'admin::app.acl.manage_members',
+        'route' => 'admin.task_manager.task_groups.manage-members.index',
+        'sort' => 3,
+    ],
+    [
+        'key' => 'task_manager.task_groups.manage-members.assign',
+        'name' => 'admin::app.acl.manage_members_assign',
+        'route' => ['admin.task_manager.task_groups.manage-members.assign'],
+        'sort' => 1,
+    ],
+    [
+        'key' => 'task_manager.task_groups.manage-members.unassign',
+        'name' => 'admin::app.acl.manage_members_unassign',
+        'route' => ['admin.task_manager.task_groups.manage-members.unassign', 'admin.task_manager.task_groups.manage-members.mass_delete'],
+        'sort' => 2,
+    ],
+
+    [
         'key' => 'products',
         'name' => 'admin::app.acl.products',
         'route' => 'admin.products.index',

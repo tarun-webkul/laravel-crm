@@ -54,7 +54,7 @@ class TaskGroupController extends Controller
 
         $taskGroup = $this->taskGroupRepository->create($request->all());
 
-        Event::dispatch('taskmanager.task_group.create.after', $taskGroup);
+        Event::dispatch('task_manager.task_group.create.after', $taskGroup);
 
         if (request()->ajax()) {
             return response()->json([
@@ -83,11 +83,11 @@ class TaskGroupController extends Controller
      */
     public function update(AttributeForm $request, int $id): RedirectResponse
     {
-        Event::dispatch('taskmanager.task_group.update.before', $id);
+        Event::dispatch('task_manager.task_group.update.before', $id);
 
         $taskGroup = $this->taskGroupRepository->update($request->all(), $id);
 
-        Event::dispatch('taskmanager.task_group.update.after', $taskGroup);
+        Event::dispatch('task_manager.task_group.update.after', $taskGroup);
 
         session()->flash('success', trans('admin::app.task_manager.task_groups.index.update-success'));
 
@@ -100,11 +100,11 @@ class TaskGroupController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            Event::dispatch('contact.task_group.delete.before', $id);
+            Event::dispatch('task_manager.task_group.delete.before', $id);
 
             $this->taskGroupRepository->delete($id);
 
-            Event::dispatch('contact.task_group.delete.after', $id);
+            Event::dispatch('task_manager.task_group.delete.after', $id);
 
             return response()->json([
                 'message' => trans('admin::app.task_manager.task_groups.index.delete-success'),
@@ -121,18 +121,26 @@ class TaskGroupController extends Controller
      */
     public function massDestroy(MassDestroyRequest $massDestroyRequest): JsonResponse
     {
-        $taskGroups = $this->taskGroupRepository->findWhereIn('id', $massDestroyRequest->input('indices'));
+        try {
 
-        foreach ($taskGroups as $taskGroup) {
-            Event::dispatch('contact.task_group.delete.before', $taskGroup);
+            $taskGroups = $this->taskGroupRepository->findWhereIn('id', $massDestroyRequest->input('indices'));
 
-            $this->taskGroupRepository->delete($taskGroup->id);
+            Event::dispatch('task_manager.task_group.delete.before', $taskGroups);
 
-            Event::dispatch('contact.task_group.delete.after', $taskGroup);
+            foreach ($taskGroups as $taskGroup) {
+
+                $this->taskGroupRepository->delete($taskGroup->id);
+            }
+
+            Event::dispatch('task_manager.task_group.delete.after', $taskGroups);
+
+            return response()->json([
+                'message' => trans('admin::app.task_manager.task_groups.index.delete-success'),
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => trans('admin::app.task_manager.task_groups.index.delete-failed'),
+            ], 400);
         }
-
-        return response()->json([
-            'message' => trans('admin::app.task_manager.task_groups.index.delete-success'),
-        ]);
     }
 }

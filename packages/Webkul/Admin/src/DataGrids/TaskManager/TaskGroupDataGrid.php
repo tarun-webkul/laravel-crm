@@ -19,10 +19,12 @@ class TaskGroupDataGrid extends DataGrid
                 'task_groups.name',
                 'task_groups.description',
                 'task_groups.created_at',
+                'task_groups.created_by',
             );
 
         $this->addFilter('id', 'task_groups.id');
         $this->addFilter('name', 'task_groups.name');
+        $this->addFilter('created_by', 'task_groups.created_by');
         $this->addFilter('created_at', 'task_groups.created_at');
 
         return $query;
@@ -48,6 +50,33 @@ class TaskGroupDataGrid extends DataGrid
             'searchable' => true,
             'sortable' => true,
             'filterable' => true,
+        ]);
+
+        /**
+         * CREATED BY
+         */
+        $this->addColumn([
+            'index' => 'created_by',
+            'label' => trans('admin::app.task_manager.task_groups.index.datagrid.created-by'),
+            'type' => 'string',
+            'filterable' => true,
+            'searchable' => true,
+            'sortable' => true,
+            'filterable_type' => 'dropdown',
+            'filterable_options' => app(config('auth.providers.users.model'))->all()
+                ->map(fn ($user) => [
+                    'label' => $user->name." ({$user->email})",
+                    'value' => $user->id,
+                ])
+                ->toArray(),
+            'closure' => function ($row) {
+                if (! $row->created_by) {
+                    return '--';
+                }
+                $user = app(config('auth.providers.users.model'))->find($row->created_by);
+
+                return $user ? $user->name." ({$user->email})" : '--';
+            },
         ]);
 
         $this->addColumn([
@@ -83,6 +112,15 @@ class TaskGroupDataGrid extends DataGrid
      */
     public function prepareActions(): void
     {
+        if (bouncer()->hasPermission('task_manager.task_groups.manage')) {
+            $this->addAction([
+                'icon' => 'icon-user',
+                'title' => trans('admin::app.task_manager.task_groups.index.datagrid.manage-members'),
+                'method' => 'GET',
+                'url' => fn ($row) => route('admin.task_manager.task_groups.manage-members.index', $row->id),
+            ]);
+        }
+
         if (bouncer()->hasPermission('task_manager.task_groups.edit')) {
             $this->addAction([
                 'icon' => 'icon-edit',
@@ -91,15 +129,6 @@ class TaskGroupDataGrid extends DataGrid
                 'url' => fn ($row) => route('admin.task_manager.task_groups.edit', $row->id),
             ]);
         }
-
-        // if (bouncer()->hasPermission('task_manager.task_groups.manage')) {
-        //     $this->addAction([
-        //         'icon' => 'icon-users',
-        //         'title' => trans('admin::app.task_manager.task_groups.index.datagrid.manage'),
-        //         'method' => 'GET',
-        //         'url' => fn ($row) => route('admin.task_manager.task_groups.manage', $row->id),
-        //     ]);
-        // }
 
         if (bouncer()->hasPermission('task_manager.task_groups.delete')) {
             $this->addAction([

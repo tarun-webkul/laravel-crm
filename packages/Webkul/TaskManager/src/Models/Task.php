@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Webkul\TaskManager\Contracts\Task as TaskContract;
 use Webkul\User\Models\User;
 
@@ -57,16 +59,6 @@ class Task extends Model implements TaskContract
         return $this->group_id;
     }
 
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function getPriority(): string
-    {
-        return $this->priority;
-    }
-
     public function getDeadline(): ?Carbon
     {
         return $this->deadline;
@@ -77,41 +69,6 @@ class Task extends Model implements TaskContract
         return (bool) $this->deadline_reminder_sent;
     }
 
-    public function getStatusLabel(): string
-    {
-        return config('task_manager.statuses.'.$this->status, ucfirst($this->status));
-    }
-
-    public function getPriorityLabel(): string
-    {
-        return config('task_manager.priorities.'.$this->priority, ucfirst($this->priority));
-    }
-
-    public function isPending(): bool
-    {
-        return $this->status === 'pending';
-    }
-
-    public function isInProgress(): bool
-    {
-        return $this->status === 'in_progress';
-    }
-
-    public function isOnHold(): bool
-    {
-        return $this->status === 'on_hold';
-    }
-
-    public function isCompleted(): bool
-    {
-        return $this->status === 'completed';
-    }
-
-    public function isCancelled(): bool
-    {
-        return $this->status === 'cancelled';
-    }
-
     public function isOverdue(): bool
     {
         return $this->deadline
@@ -120,39 +77,76 @@ class Task extends Model implements TaskContract
             && ! $this->isCancelled();
     }
 
-    // ─── Blade Accessors ─────────────────────────────────────────────────────
+    // ─── Custom Methods ─────────────────────────────────────────────────────
 
-    public function getStatusLabelAttribute(): string
+    public function status(): ?string
     {
-        return $this->getStatusLabel();
+        if (is_null($this->attributes['status'] ?? null)) {
+            return null;
+        }
+
+        $option = $this->getAttributeOption('status', $this->attributes['status']);
+
+        return $option?->name;
     }
 
-    public function getPriorityLabelAttribute(): string
+    public function priority(): ?string
     {
-        return $this->getPriorityLabel();
+        if (is_null($this->attributes['priority'] ?? null)) {
+            return null;
+        }
+
+        $option = $this->getAttributeOption('priority', $this->attributes['priority']);
+
+        return $option?->name;
     }
 
-    public function getStatusColorAttribute(): string
+    public static function statusOptions(): Collection
     {
-        return match ($this->status) {
-            'pending' => 'yellow',
-            'in_progress' => 'blue',
-            'on_hold' => 'orange',
-            'completed' => 'green',
-            'cancelled' => 'red',
-            default => 'gray',
-        };
+        return static::getAttributeOptions('status');
     }
 
-    public function getPriorityColorAttribute(): string
+    public static function priorityOptions(): Collection
     {
-        return match ($this->priority) {
-            'low' => 'green',
-            'medium' => 'blue',
-            'high' => 'orange',
-            'critical' => 'red',
-            default => 'gray',
-        };
+        return static::getAttributeOptions('priority');
+    }
+
+    protected function getAttributeOption(string $attributeCode, int $optionId): ?object
+    {
+        return DB::table('attribute_options')
+            ->join('attributes', 'attributes.id', '=', 'attribute_options.attribute_id')
+            ->where('attributes.code', $attributeCode)
+            ->where('attributes.entity_type', 'tasks')
+            ->where('attribute_options.id', $optionId)
+            ->select(
+                'attribute_options.id',
+                'attribute_options.name',
+                'attribute_options.sort_order',
+            )
+            ->first();
+    }
+
+    protected static function getAttributeOptions(string $attributeCode): Collection
+    {
+        static $cache = [];
+
+        if (isset($cache[$attributeCode])) {
+            return $cache[$attributeCode];
+        }
+
+        $cache[$attributeCode] = DB::table('attribute_options')
+            ->join('attributes', 'attributes.id', '=', 'attribute_options.attribute_id')
+            ->where('attributes.code', $attributeCode)
+            ->where('attributes.entity_type', 'tasks')
+            ->orderBy('attribute_options.sort_order')
+            ->select(
+                'attribute_options.id',
+                'attribute_options.name',
+                'attribute_options.sort_order',
+            )
+            ->get();
+
+        return $cache[$attributeCode];
     }
 
     // ─── Relationships ────────────────────────────────────────────────────────
